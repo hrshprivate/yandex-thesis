@@ -1,7 +1,5 @@
-# -courseproject
-__________
 # -Python Django
 __________
-**-SQlite + MySql(Host Only)**
+**Дипломная работа с слитых курсов по Django python**
 __________
-Ссылка на сайт: http://lollolc7.beget.tech/
+
