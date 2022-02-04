@@ -1,0 +1,99 @@
+<!doctype html>
+{% load static %}
+{% load poll_extras %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Конкретный рецепт</title>
+    <link rel="shortcut icon" href="{%  static 'icons/favicon.png' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="{% static 'testApp/css/pages/single.css' %}">
+</head>
+<body class="body">
+{% csrf_token %}
+    {% include 'includes/header.html' %}
+    <main class="main container">
+        <div class="single-card" data-id="{{ recipe.id }}" data-author="{{ recipe.author.id }}">
+
+            <form action="" enctype="multipart/form-data" method="get">
+            <img src="{{ MEDIA_URL }}{{ recipe.image.url }}" height="480" width="480" alt="какой-то текст" class="single-card__image">
+            </form>
+
+            <div class="single-card__info">
+                <div class="single-card__header-info">
+                    <h1 class="single-card__title">{{ recipe.name }}</h1>
+                    <div class="single-card__favorite">
+                        {% if user.is_authenticated %}
+		{% if recipe.id|favorite:user %}
+			<button class="button button_style_none" name="favorites"><span class="icon-favorite icon-favorite_big icon-favorite_active"></span></button>
+		{% else %}
+			<button class="button button_style_none" name="favorites" data-out><span class="icon-favorite icon-favorite_big"></span></button>
+		{% endif %}
+	                    {% endif %}
+                        <div class="single-card__favorite-tooltip tooltip">Добавить в избранное</div>
+                    </div>
+                </div>
+                <ul class="single-card__items">
+                    {% for item in recipe.tag.all %}
+                        <li class="card__item"><span class="badge badge_style_green">{{ item.brk }}</span></li>
+                    {% endfor %}
+                </ul>
+                <div class="single-card__items single-card__items_column">
+                    <p class="single-card__text"><span class="icon-time"></span> {{ recipe.time }} мин.</p>
+                    <ul class="single-card__items">
+                        <li class="single-card__item"><p class="single-card__text"><span class="icon-user"></span> {{ recipe.author }}</p></li>
+                        {% if user.is_authenticated and recipe.author == request.user %}
+                        <li class="single-card__item">  <a style="margin-left: 2.5em" href="{% url 'edit_recipe' recipe_id=recipe.id %}" class="single-card__text">Редактировать рецепт</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <ul class="single-card__items">
+                    {% if request.user.is_authenticated %}
+    {% if recipe.id|purchased:user %}
+        <li class="single-card__item"><button class="button button_style_light-blue" name="purchases" data-out><span class="icon-check button__icon"></span>Рецепт добавлен</button></li>
+    {% else %}
+        <li class="single-card__item"><button class="button button_style_blue" name="purchases" data-out><i class="fas fa-plus"></i> Добавить в покупки</button></li>
+    {% endif %}
+{% endif %}
+</ul>
+<ul class="single-card__items">
+    {% include 'includes/subButton.html' %}
+
+
+                </ul>
+                <div class="single-card__section">
+                    <h3 class="single-card__section-title">Ингридиенты:</h3>
+                    <div class="single-card__items single-card__items_column">
+                        {% for el in recipe.ing.all %}
+
+
+                                    <p class=" single-card__section-item">{{ el.name }} {{ el.mass }} шт.</p>
+
+
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="single-card__section">
+                    <h3 class="single-card__section-title">Описание:</h3>
+                    <p class=" single-card__section-text">{{ recipe.dis }}</p>
+                </div>
+            </div>
+        </div>
+    </main>
+  {% include 'includes/footer.html' %}
+<script src="{% static 'testApp/js/components/Purchases.js' %}"></script>
+<script src="{% static 'testApp/js/components/Favorites.js' %}"></script>
+<script src="{% static 'testApp/js/components/Subscribe.js' %}"></script>
+<script src="{% static 'testApp/js/config/config.js' %}"></script>
+
+<script src="{% static 'testApp/js/components/MainCards.js' %}"></script>
+<script src="{% static 'testApp/js/components/SingleCard.js' %}"></script>
+<script src="{% static 'testApp/js/components/Header.js' %}"></script>
+
+<script src="{% static 'testApp/js/api/Api.js' %}"></script>
+<script src="{% static 'testApp/js/singlePage.js' %}"></script>
+</body>
+</html>

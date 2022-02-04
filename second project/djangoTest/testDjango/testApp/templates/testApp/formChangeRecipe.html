@@ -1,0 +1,130 @@
+<!doctype html>
+{% load static %}
+{% load poll_css %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Редактирование рецепта</title>
+      <link rel="shortcut icon" href="{%  static 'icons/favicon.png' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="{% static 'testApp/css/pages/form.css' %}">
+</head>
+<body class="body">
+{% include 'includes/header.html' %}
+<main class="main container">
+    <div class="main__header">
+        <h1 class="main__title">Редактирование рецепта</h1>
+    </div>
+    <div class="form-container">
+        <form action="" class="form" method="post" enctype="multipart/form-data">{% csrf_token %}
+            <div class="form__group">
+                <label class="form__label">Название рецепта</label>
+                <div class="form__field-group">
+                {{ form.name|add_class:"form__input" }}
+                    {% for error in form.name.errors %}
+                        <span class="form__error">{{ error }}</span>
+                    {% endfor %}
+                     </div>
+            </div>
+            <div class="form__group">
+                <p class="form__label">Теги</p>
+                <div class="form__field-group">
+
+                        <div class="tags">
+                            {% for tag in tags %}
+                                <div class="tags__item">
+
+                                    <input type="checkbox" name="tags" class="tags__checkbox tags__checkbox_style_green"{% if tag in recipe.tag.all %} checked="" {% endif %} value="{{ tag.id }}" >
+                                    <label class="tags__label">{{ tag.brk }}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    {% for error in form.tag.errors %}
+                            <span class="form__error">{{ error }}</span>
+                        {% endfor %}
+                </div>
+            </div>
+           <div class="form__group">
+                <label for="nameIngredient" class="form__label">Ингредиенты</label>
+                <div class="form__field-group">
+                    <div class="form__field-group-ingredientes">
+                        <div class="form__dropdown">
+                            <input type="text" id="nameIngredient"  name="asd" placeholder="Для добавления --Add--" class="form__input">
+                            <div class="form__dropdown-items">
+                            </div>
+                        </div>
+                        <input name="privet"  type="number" id="cantidad" class="form__input" min="0" >
+                        <label for="cantidad" class="form__label" id="cantidadVal">шт.</label>
+                    </div>
+                    <div class="form__field-group-ingredientes-container">
+                        {% for el in recipe.ing.all %}
+                            <div class="form__field-item-ingredient">
+                                <span> {{ el.name }} {{ el.mass }} шт. </span>
+                                <a href="{% url 'delete' el.id %}" class="form__field-item-delete"></a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="form__field-group-ingredientes-container">
+                        <input  type="submit" class="form__ingredient-link" id="addIng" value="Add">
+                        <span class="form__error"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form__group">
+                <label class="form__label">Время приготовления</label>
+                <div class="form__field-group form__field-group_time">
+                   {{ form.time|add_class:"form__input " }}
+                    <label class="form__label">минут</label>
+                    {% for error in form.time.errors %}
+                        <span class="form__error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form__group">
+                <label class="form__label">Описание</label>
+                <div class="form__field-group">
+                     {{ form.dis|add_class:"form__textarea" }}
+                    {% for error in form.dis.errors %}
+                        <span class="form__error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form__group">
+                <span class="form__label">Загрузить фото</span>
+                <div class="form__field-group">
+
+                        <div class=form__fileitem>
+                            {{ form.image }}
+                        </div>
+                    <div class="form__filename"></div>
+                    {% for error in form.image.errors %}
+                        <span class="form__error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form__footer">
+                <button type="submit" class="button button_style_blue">Сохранить</button> <a style="margin-left: 2.5em" href="{% url 'DeleteChatUser' recipe.id %}" class="form__ingredient-link">Удалить</a>
+            </div>
+        </form>
+    </div>
+
+
+</main>
+{% include 'includes/footer.html' %}
+<script src="{% static 'testApp/js/api/Api.js' %}"></script>
+<script src="{% static 'testApp/js/AddSomeIng.js' %}"></script>
+<script src="{% static 'testApp/js/DeleteSomeIng.js' %}"></script>
+
+<script src="{% static 'testApp/js/config/config.js' %}"></script>
+<script src="{% static 'testApp/js/components/Header.js' %}"></script>
+<script src="{% static 'testApp/js/utils/debouncing.js' %}"></script>
+
+<script src="{% static 'testApp/js/formRecipe.js' %}"></script>
+</body>
+</html>

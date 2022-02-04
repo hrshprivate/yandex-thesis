@@ -1,0 +1,8 @@
+{% load poll_extras %}
+{% if request.user.is_authenticated %}
+    {% if contact.id|purchased:user %}
+        <button class="button button_style_light-blue" name="purchases"><span class="icon-check button__icon"></span>Рецепт добавлен</button>
+    {% else %}
+        <button class="button button_style_blue" name="purchases" data-out><i class="fas fa-plus"></i> Добавить в покупки</button>
+    {% endif %}
+{% endif %}

@@ -1,0 +1,35 @@
+<header class="header">
+    <nav class="nav">
+        <div class="nav__container container">
+            <ul class="nav__items list">
+                  <li class="nav__item {% if request.resolver_match.url_name == "home" %}nav__item_active{% endif %}">
+		            <a href="{% url 'home' %}" class="nav__link link">Рецепты</a></li>
+                {% if request.user.is_authenticated %}
+                  <li class="nav__item {% if request.resolver_match.url_name == "myFollow" %}nav__item_active{% endif %}">
+		            <a href="{% url 'myFollow' %}" class="nav__link link">Мои подписки</a></li>
+                  <li class="nav__item {% if request.resolver_match.url_name == "formRecipe" %}nav__item_active{% endif %}">
+		            <a href="{% url 'formRecipe' %}" class="nav__link link">Создать рецепт</a></li>
+                  <li class="nav__item {% if request.resolver_match.url_name == "favorite" %}nav__item_active{% endif %}">
+		            <a href="{% url 'favorite' %}" class="nav__link link">Избранное</a></li>
+                  <li class="nav__item {% if request.resolver_match.url_name == "shopList" %}nav__item_active{% endif %}">
+		            <a href="{% url 'shopList' %}" class="nav__link link">Список покупок</a><span class="badge badge_style_blue nav__badge" id="counter">{% if count > 0 %}{{ count }}{% endif %}</span></li>
+                {% endif %}
+              </ul>
+
+              <ul class="nav__items list">
+                  {% if request.user.is_authenticated %}
+                  <li class="nav__item"><a href="{% url 'changePassword' %}" class="nav__link link">Изменить пароль</a></li>
+
+                  <li class="nav__item"><a href="{% url 'logout' %}" class="nav__link link">Выход</a></li>
+                  {% else %}
+
+                    <ul class="nav__items list">
+                        <li class="nav__item"><a href="{% url 'login' %}" class="nav__link link">Войти</a></li>
+                        <li class="nav__item"><a href="{% url 'register' %}" class="button button_style_blue">Создать аккаунт</a></li>
+                    </ul>
+
+                  {% endif %}
+              </ul>
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,9 @@
+{% load poll_extras %}
+{% if request.user.is_authenticated and request.user != recipe.author %}
+        {% if request.user|is_follower:profile.id %}
+        <button class="button button_style_light-blue " name="subscribe">Отписаться от автора</button>
+        {% else %}
+        <button class="button button_style_light-blue" name="subscribe" data-out>Подписаться на автора</button>
+
+        {% endif %}
+    {% endif %}

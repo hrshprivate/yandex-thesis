@@ -1,0 +1,54 @@
+{% load static %}
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Войти на сайт</title>
+    <link rel="shortcut icon" href="{%  static 'icons/favicon.png' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="{% static 'testApp/css/pages/form.css' %}">
+</head>
+<body class="body">
+{% include 'includes/header.html' %}
+<main class="main container">
+    <div class="main__header">
+        <h1 class="main__title">Войти на сайт</h1>
+    </div>
+    <div class="form-container">
+        <form class="form" method="post">{% csrf_token %}
+            <div class="form__group">
+                <label class="form__label">Имя</label>
+                <div class="form__field-group">
+                    <input type="text" name="username" required="" class="form__input">
+                </div>
+            </div>
+            <div class="form__group">
+                <label class="form__label">Пароль</label>
+                <div class="form__field-group">
+                    <input type="password" name="password" required="" class="form__input">
+                </div>
+            </div>
+                               <div class="form-error">
+                       {% for field, error in form.errors.items %}
+        <div class="form__error" role="alert">
+            {{ error|striptags }}
+        </div>
+                  {% endfor %}
+                               </div>
+                                   <br>
+            <div class="form__footer">
+                <button type="submit" class="button button_style_blue">Войти</button>
+            </div>
+
+        </form>
+    </div>
+
+
+</main>
+{% include 'includes/footer.html' %}
+</body>
+</html>

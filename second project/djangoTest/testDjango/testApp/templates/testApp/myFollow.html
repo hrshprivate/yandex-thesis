@@ -1,0 +1,66 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Мои подписки</title>
+        <link rel="shortcut icon" href="{%  static 'icons/favicon.png' %}">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="{% static 'testApp/css/pages/myFollow.css' %}">
+
+</head>
+<body class="body">
+{% include 'includes/header.html' %}
+<main class="main container">
+    <div class="main__header">
+        <h1 class="main__title">Мои подписки</h1>
+    </div>
+    <div class="card-list">
+        {% for el in page_obj %}
+        <div class="card-user" data-author="{{ el.author }}">
+        <div class="card-user__header">
+            <h2 class="card-user__title">{{ el.author.first_name }}</h2>
+        </div>
+        <div class="card-user__body">
+            <ul class="card-user__items">
+                {% for recipe in el.author.recipes.all|slice:3 %}
+                <li class="card-user__item">
+                    <div class="recipe">
+                        <img src="{{ MEDIA_URL }}{{ recipe.image.url }}"  alt="какой-то-текст" class="recipe__image">
+                        <h3 class="recipe__title">{{ recipe.name }}</h3>
+                        <p class="recipe__text"><i class="far fa-clock"></i> {{ recipe.time }} мин.</p>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% if el.author.recipes.count > 3 %}
+
+               <li class="card-user__item">
+                        <a href="{% url 'profile_view' el.author.id %}" class="card-user__link link"> Ещё {{ el.author.recipes.count|add:-3 }} ..</a>
+                    </li>
+            {% endif %}
+        </div>
+        <div class="card-user__footer">
+            <button class="button button_style_light-blue button_size_auto" name="subscribe">Отписаться</button>
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% if page_obj.paginator.count  > 3 %}
+            {% include 'includes/paginator.html' %}
+        {% endif %}
+</main>
+{% include 'includes/footer.html' %}
+<script src="{% static 'testApp/js/config/config.js' %}"></script>
+<script src="{% static 'testApp/js/components/MainCards.js' %}"></script>
+<script src="{% static 'testApp/js/components/MyFollow.js' %}"></script>
+<script src="{% static 'testApp/js/components/Subscribe.js' %}"></script>
+<script src="{% static 'testApp/js/components/Header.js' %}"></script>
+<script src="{% static 'testApp/js/api/Api.js' %}"></script>
+<script src="{% static 'testApp/js/myFollow.js' %}"></script>
+
+</body>
+</html>

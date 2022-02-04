@@ -1,0 +1,47 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Список покупок</title>
+    <link rel="shortcut icon" href="{%  static 'icons/favicon.png' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="{% static 'testApp/css/pages/shopList.css' %}">
+</head>
+<body class="body">
+{% include 'includes/header.html' %}
+<main class="main container">
+    <div class="main__header">
+        <h1 class="main__title">Список покупок</h1>
+    </div>
+    <div class="card-list card-list_column">
+        <form method="post" action="{% url 'export_data' %}" enctype="multipart/form-data">{% csrf_token %}
+        <ul class="shopping-list">
+            {% for el in recipes %}
+            <li class="shopping-list__item" data-id="{{ el.id }}">
+                <div class="recipe recipe_reverse">
+                    <img src="{{ MEDIA_URL }}{{ el.image.url }}" alt="какой-то текст" class="recipe__image recipe__image_big">
+                    <h3 class="recipe__title">{{ el.name }}</h3>
+                    <p class="recipe__text"><span class="icon-time"></span> {{ el.time }} мин.</p>
+                </div>
+                <a href="{% url 'DeleteChatUser' el.id %}" class="shopping-list__button link">Удалить</a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <button type="submit" class="button button_style_blue">Скачать список</button>
+</form>
+
+    </div>
+</main>
+{% include 'includes/footer.html' %}
+<script src="{% static 'testApp/js/config/config.js' %}"></script>
+<script src="{% static 'testApp/js/components/Header.js' %}"></script>
+<script src="{% static 'testApp/js/components/ShopList.js' %}"></script>
+<script src="{% static 'testApp/js/api/Api.js' %}"></script>
+<script src="{% static 'testApp/js/shopList.js' %}"></script>
+</body>
+</html>

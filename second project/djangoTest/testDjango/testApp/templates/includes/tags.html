@@ -1,0 +1,8 @@
+<ul class="tags">
+                 {% for tag in tags %}
+                <li class="tags__item">
+                    <a id="dinner" class="tags__checkbox tags__checkbox_style_orange tags__checkbox_active" href="?page={{ page_obj.number }}&break={{ tag.id }}"></a>
+                    <span class="tags__label">{{ tag.brk }}</span>
+                </li>
+                {% endfor %}
+            </ul>

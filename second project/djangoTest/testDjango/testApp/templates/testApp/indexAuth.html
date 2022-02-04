@@ -1,0 +1,77 @@
+<!doctype html>
+{% load static %}
+{% load poll_extras %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Рецепты</title>
+    <link rel="shortcut icon" href="{%  static 'icons/favicon.png' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="{% static 'testApp/css/pages/index.css' %}">
+</head>
+{% csrf_token %}
+<body class="body">
+ {% include 'includes/header.html' %}
+
+ <main class="main container">
+
+        <div class="main__header">
+            <h1 class="main__title">Рецепты</h1>
+
+            {% include 'includes/tags.html' %}
+
+        </div>
+
+        <div class="card-list">
+ {% for contact in page_obj %}
+            <div class="card" data-id="{{ contact.id }}">
+            {% if contact.image %}
+                <a href="{% url 'mono' recipe_id=contact.id %}" class="link" target="_blank"><img src="{{ MEDIA_URL }}{{ contact.image.url }}" height="960" width="339" alt="Какой-то текст" class="card__image"></a>
+                {% endif %}
+                <div class="card__body">
+                    <a class="card__title link" target="_blank">{{ contact.name }}</a>
+
+                    <ul class="card__items">
+         {% for item in contact.tag.all %}
+                        <li class="card__item"><span class="badge badge_style_green">{{ item.brk }}</span></li>
+         {% endfor %}
+                    </ul>
+
+                    <div class="card__items card__items_column">
+                        <p class="card__text"><i class="far fa-clock"></i>  {{ contact.time }} m</p>
+                        <p class="card__text"><i class="fas fa-user-tie"></i> <a style="color: black" href="{% url 'profile_view' contact.author.id %}">{{ contact.author }}</a></p>
+                    </div>
+
+                </div>
+                <div class="card__footer">
+
+ {% include 'includes/purchButton.html' %}
+                {% include 'includes/favButton.html' %}
+
+                </div>
+
+            </div>
+   {% endfor %}
+        </div>
+
+{% if page_obj.paginator.count  > 3 %}
+            {% include 'includes/paginator.html' %}
+        {% endif %}
+    </main>
+     {% include 'includes/footer.html' %}
+    <script src="{% static 'testApp/js/components/MainCards.js' %}"></script>
+    <script src="{% static 'testApp/js/components/Purchases.js' %}"></script>
+    <script src="{% static 'testApp/js/components/Favorites.js' %}"></script>
+
+  <script src="{% static 'testApp/js/config/config.js' %}"></script>
+  <script src="{% static 'testApp/js/components/CardList.js' %}"></script>
+  <script src="{% static 'testApp/js/components/Header.js' %}"></script>
+
+  <script src="{% static 'testApp/js/api/Api.js' %}"></script>
+  <script src="{% static 'testApp/js/indexAuth.js' %}"></script>
+</body>
+</html>

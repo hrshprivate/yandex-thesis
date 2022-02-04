@@ -1,0 +1,19 @@
+{% if page_obj.has_other_pages %}
+        <nav class="pagination" aria-label="Search results pages">
+            <ul class="pagination__container">
+                {% if page_obj.has_previous %}
+                <li class="pagination__item"><a class="pagination__link link" href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a></li>
+                {% endif %}
+                {% for contact in page_obj.paginator.page_range %}
+                {% if page_obj.number == contact %}
+                <li class="pagination__item pagination__item_active"><a class="pagination__link link">{{ contact }}</a></li>
+                {% elif contact >= page_obj.number|add:-1 and contact <= page_obj.number|add:1 %}
+                <li class="pagination__item"><a class="pagination__link link" href="?page={{ contact }}">{{ contact }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <li class="pagination__item"><a class="pagination__link link" href="?page={{ page_obj.next_page_number }}"><i class="fas fa-chevron-right"></i></a></li>
+                {% endif %}
+            </ul>
+        </nav>
+     {% endif %}
